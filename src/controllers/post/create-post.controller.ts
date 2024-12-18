@@ -1,12 +1,7 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  Post,
-  UseGuards,
-  UsePipes,
-} from '@nestjs/common'
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common'
+import { CurrentUser } from 'src/auth/current-auth.decorator'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { UserPayload } from 'src/auth/jwt.strategy'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
@@ -16,8 +11,9 @@ const createPostBodySchema = z.object({
   content: z.string(),
   slug: z.string(),
   category: z.string(),
-  authorId: z.string().uuid(),
 })
+
+const sessionPipeSchema = new ZodValidationPipe(createPostBodySchema)
 
 type PostBodySchema = z.infer<typeof createPostBodySchema>
 
@@ -28,9 +24,12 @@ export class PostController {
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createPostBodySchema))
-  async post(@Body() body: PostBodySchema) {
-    const { title, content, slug, category, authorId } = body
+  async post(
+    @Body(sessionPipeSchema) body: PostBodySchema,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const { title, content, slug, category } = body
+    const userId = user.sub
 
     return this.prisma.post.create({
       data: {
@@ -38,7 +37,7 @@ export class PostController {
         content,
         slug,
         category,
-        authorId,
+        authorId: userId,
       },
     })
   }
