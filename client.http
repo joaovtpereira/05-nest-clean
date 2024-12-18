@@ -1,4 +1,5 @@
 @base_url = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
 
 # @name signUp
 POST {{base_url}}/sign-up 
@@ -6,18 +7,32 @@ Content-Type: application/json
 
 {
     "name": "João",
-    "email": "joaovitorpessoal8@gmail.com",
+    "email": "joaovitorpessoal9@gmail.com",
     "password": "123456"
 }
 
 ###
 
 # @name authenticate
-
 POST {{base_url}}/session
 Content-Type: application/json
 
 {
     "email": "joaovitorpessoal8@gmail.com",
     "password": "123456"
+}
+
+###
+
+# @name create_post
+POST {{base_url}}/post
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Teste",
+    "slug": "teste",
+    "content": "Teste",
+    "category": "teste",
+    "authorId": "3123"
 }
