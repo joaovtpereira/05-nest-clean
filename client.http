@@ -34,5 +34,5 @@ Authorization: Bearer {{authToken}}
     "slug": "teste",
     "content": "Teste",
     "category": "teste",
-    "authorId": "3123"
+    "authorId": "aac4b5fe-d3fe-4167-980e-331f6fcc5549"
 }
