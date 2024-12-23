@@ -6,6 +6,7 @@ import { envSchema } from './env'
 import { SessionController } from './controllers/auth/sessions.controller'
 import { AuthModule } from './auth/auth.module'
 import { PostController } from './controllers/post/create-post.controller'
+import { GetPostsController } from './controllers/post/fetch-post-list.controller'
 
 @Module({
   imports: [
@@ -15,7 +16,12 @@ import { PostController } from './controllers/post/create-post.controller'
     }),
     AuthModule,
   ],
-  controllers: [SignUpController, SessionController, PostController],
+  controllers: [
+    SignUpController,
+    SessionController,
+    PostController,
+    GetPostsController,
+  ],
   providers: [PrismaService],
 })
 export class AppModule {}

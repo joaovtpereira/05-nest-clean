@@ -35,3 +35,11 @@ Authorization: Bearer {{authToken}}
     "content": "Teste",
     "category": "teste"
 }
+
+###
+
+# @name get_posts_per_page
+GET {{base_url}}/posts?page=1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
